@@ -1,4 +1,5 @@
 Example - Kaniko build and push image to Docker hub
+
 Environment - Window Wsl2, Kubernetes cluster(kind) with 3 nodes, Kaniko and Docker hub
 
 Create dockerfile in respective node
