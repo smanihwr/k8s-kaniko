@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: kaniko
+spec:
+  containers:
+    - name: kaniko
+      image: gcr.io/kaniko-project/executor:latest
+      args: [
+          "--dockerfile=/workspace/dockerfile",
+          "--context=dir://workspace",
+          "--destination=docker-repo/wsl-kaniko-test:0.0.1", # change docker repo here
+        ]
+      volumeMounts:
+        - name: dockerfile-storage
+          mountPath: /workspace
+        - name: docker-secret-volume
+          mountPath: /kaniko/.docker
+          readOnly: true
+  nodeSelector:
+    kubernetes.io/hostname: wslkindmultinodes-worker
+  restartPolicy: Never
+  volumes:
+    - name: dockerfile-storage
+      persistentVolumeClaim:
+        claimName: dockerfile-claim
+    - name: docker-secret-volume
+      secret:
+        secretName: docker-secret
